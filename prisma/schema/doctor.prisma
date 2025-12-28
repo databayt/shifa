@@ -1,0 +1,230 @@
+// Doctor Models
+
+model Doctor {
+  id       String @id @default(cuid())
+  userId   String @unique
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  contribute String?
+  bio        String?
+  cv         String?
+  portfolio  String?
+  cover      String?
+
+  // Contact
+  phone     String?
+  whatsapp  String?
+  twitter   String?
+  facebook  String?
+  linkedin  String?
+  telegram  String?
+  instagram String?
+  tiktok    String?
+  link      String?
+
+  // Birthday
+  birthDate         DateTime?
+  birthCountry      String?
+  birthState        String?
+  birthLocality     String?
+  birthAdminUnit    String?
+  birthNeighborhood String?
+  birthMonth        Int?
+  birthYear         Int?
+
+  // Current Location
+  currentCountry      String?
+  currentState        String?
+  currentLocality     String?
+  currentAdminUnit    String?
+  currentNeighborhood String?
+
+  // Original Location
+  originalCountry      String?
+  originalState        String?
+  originalLocality     String?
+  originalAdminUnit    String?
+  originalNeighborhood String?
+
+  // Nationality
+  nationalityId String?
+  maritalStatus String?
+  gender        String?
+  religion      String?
+
+  // Education & Work
+  educationLevel   String?
+  institution      String?
+  yearOfCompletion Int?
+  major            String?
+
+  // Additional education fields
+  studentYear Int?
+
+  // Bachelor's information
+  bachelorInstitution    String?
+  bachelorMajor          String?
+  bachelorCompletionYear Int?
+
+  // Master's information
+  masterInstitution    String?
+  masterMajor          String?
+  masterCompletionYear Int?
+
+  // PhD information
+  phdInstitution    String?
+  phdMajor          String?
+  phdCompletionYear Int?
+
+  // Professor information
+  professorInstitution     String?
+  professorMajor           String?
+  professorCompletionYear  Int?
+
+  currentOccupation  String?
+  employmentSector   String?
+  workplaceAddress   String?
+  companyName        String?
+
+  // Student Details
+  studentInstitution String?
+  studentFaculty     String?
+
+  // Activities
+  partyMember    Boolean   @default(false)
+  partyName      String?
+  partyStartDate DateTime?
+  partyEndDate   DateTime?
+
+  unionMember    Boolean   @default(false)
+  unionName      String?
+  unionStartDate DateTime?
+  unionEndDate   DateTime?
+
+  ngoMember   Boolean @default(false)
+  ngoName     String?
+  ngoActivity String?
+
+  clubMember Boolean @default(false)
+  clubName   String?
+  clubType   String?
+
+  // Skills and Interests
+  skills    String[] @default([])
+  interests String[] @default([])
+
+  // Emergency Contacts
+  emergencyName1     String?
+  emergencyRelation1 String?
+  emergencyPhone1    String?
+  emergencyName2     String?
+  emergencyRelation2 String?
+  emergencyPhone2    String?
+
+  // Other
+  referralSource   String?
+  acquaintanceName String?
+  donationAmount   Float?
+  donationDate     DateTime?
+  oathAcknowledged Boolean?  @default(false)
+
+  // Onboarding
+  onboardingStatus String? @default("PENDING")
+  onboardingStep   Int?    @default(1)
+
+  // Application status
+  applicationStatus ApplicationStatus @default(PENDING)
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  reviewNotes       String?
+
+  // Notifications
+  notifications Notification[] @relation("DoctorNotifications")
+}
+
+model PaediatricDoctor {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Basic Information
+  fullNameEnglish String
+  fullNameArabic  String
+  namePrefix      String
+  stageOfCareer   String
+
+  // Personal Details
+  placeOfBirth              String?
+  dateOfBirth               String?
+  originalHomeTownOrVillage String?
+  personalEmail             String
+  agreeToEmailPublication   Boolean
+
+  // Education
+  universityOfPrimaryGraduation          String
+  countryOfUniversityOfPrimaryGraduation String
+  yearOfGraduationFromMedicine           String
+  awardsDuringPrimaryMedicalDegree       String?
+
+  // Post Graduate Studies
+  universityOfPostGraduation          String?
+  countryOfUniversityOfPostGraduation String?
+  yearOfPostGraduation                String?
+  awardsPostGraduate                  String?
+  otherQualifications                 String?
+
+  // Qualifications
+  qualifications     String[]
+  otherQualification String?
+
+  // Subspecialty
+  paediatricsSubspecialty String[]
+  otherSubspecialty       String?
+
+  // Certification
+  subspecialtyCertified  String
+  subspecialtyDegreeName String?
+
+  // Career Information
+  currentPosition             String
+  currentInstitution          String
+  countryOfWork               String
+  yearsInPosition             String?
+  academicPositionCurrentOrPast String?
+  pastCareerPositions         String?
+
+  // Research and Publications
+  scientificPapersPublished      String?
+  booksEdited                    String?
+  chaptersEditedInPaediatricsBooks String?
+  majorCareerAchievement         String?
+  recognitionOfServices          String?
+
+  // Personal Information
+  secondNationality          String?
+  agreeToPhotoPublication    Boolean  @default(false)
+  hobbiesOrInterests         String[] @default([])
+  nameOfSpouse               String?
+  workOfSpouse               String?
+  childrenNamesAndStatus     String?
+  specialOccasionOrRole      String?
+  extendedRequestFamilyPhoto String?
+
+  // File uploads
+  scientificPapersFiles String[] @default([])
+  personalPhotos        String[] @default([])
+  updatedCV             String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Onboarding
+  onboardingStatus String? @default("PENDING")
+  onboardingStep   Int?    @default(1)
+
+  // Application status
+  applicationStatus ApplicationStatus @default(PENDING)
+  reviewedBy        String?
+  reviewedAt        DateTime?
+  reviewNotes       String?
+}

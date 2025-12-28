@@ -1,0 +1,53 @@
+// Content Models
+// Notification, Image, and Article models
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  userId    String?
+  doctorId  String?
+  type      String
+  isRead    Boolean  @default(false)
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  doctor Doctor? @relation(fields: [doctorId], references: [id], onDelete: SetNull, name: "DoctorNotifications")
+
+  @@index([userId])
+  @@index([doctorId])
+  @@index([isRead])
+}
+
+model Image {
+  id           String   @id @default(cuid())
+  url          String
+  fileId       String   @unique
+  fileName     String
+  filePath     String?
+  thumbnailUrl String?
+  size         Int?
+  width        Int?
+  height       Int?
+  format       String?
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  image       String
+  body        String
+  author      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+}

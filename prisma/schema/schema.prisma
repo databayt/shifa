@@ -1,0 +1,12 @@
+// Main Prisma Schema Configuration
+// Models are split into separate files in the models/ directory
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "library"
+}
