@@ -2,8 +2,14 @@
 
 import { Resend } from 'resend';
 
-// Initialize Resend with API key
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy initialization to avoid build-time errors
+let resend: Resend | null = null;
+function getResend() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 type NotificationPayload = {
   to: string | string[];
@@ -207,7 +213,7 @@ async function sendNotification({ to, subject, content }: NotificationPayload) {
   }
   
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: `الحركة الوطنية للبناء والتنمية <${process.env.EMAIL_FROM || 'noreply@nmbdsd.org'}>`,
       to: recipients,
       subject: subject,

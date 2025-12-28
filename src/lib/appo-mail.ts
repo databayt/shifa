@@ -1,6 +1,13 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy initialization to avoid build-time errors
+let resend: Resend | null = null;
+function getResend() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 const domain = process.env.NEXT_PUBLIC_APP_URL;
 
@@ -13,7 +20,7 @@ export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   console.log("2FA Token:", token);
 
   try {
-    const response = await resend.emails.send({
+    const response = await getResend().emails.send({
       from: 'no-reply@databayt.org',
       to: email,
       subject: "2FA Code",
@@ -35,7 +42,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   console.log("Password reset link:", resetLink);
 
   try {
-    const response = await resend.emails.send({
+    const response = await getResend().emails.send({
       from: 'no-reply@databayt.org',
       to: email,
       subject: 'Reset your password',
@@ -57,7 +64,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   console.log("Email confirmation link:", confirmLink);
 
   try {
-    const response = await resend.emails.send({
+    const response = await getResend().emails.send({
       from: 'support@databayt.org',
       to: email,
       subject: "Confirm your email",
@@ -83,7 +90,7 @@ export const sendEmailNotification = async (
 ) => {
   try {
     // Send the email using Resend
-    const response = await resend.emails.send({
+    const response = await getResend().emails.send({
       from: 'no-reply@databayt.org',  // Replace with your verified sender email
       to: toEmail,
       subject: subject,
